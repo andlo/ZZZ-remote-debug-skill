@@ -1,6 +1,3 @@
-Start debug
-Enable debug
-Run debug
-Start ptvsd
-Enable ptvsd
-Run ptvsd
+Start (remote|ptvsd) debug (adaptor)
+Enable (remote|ptvsd) debug (adaptor)
+Run (remote|ptvsd) debug (adaptor)

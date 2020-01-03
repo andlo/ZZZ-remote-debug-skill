@@ -1,0 +1,3 @@
+Stop (remote|ptvsd) debug (adaptor)
+Exit (remote|ptvsd) debug (adaptor)
+End (remote|ptvsd) debug (adaptor)
