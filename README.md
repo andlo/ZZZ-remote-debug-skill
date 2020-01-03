@@ -1,4 +1,4 @@
-# <img src="https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/bug.svg" card_color="#5B6984" width="50" height="50" style="vertical-align:bottom"/> Remote Debug
+# <img src="https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/bug.svg" card_color="#990000" width="50" height="50" style="vertical-align:bottom"/> Remote Debug
 Enable PTVSD - Python Tools for Visual Studio debug server
 
 ## About
