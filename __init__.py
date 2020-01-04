@@ -44,15 +44,13 @@ class RemoteDebug(MycroftSkill):
             new_config = {
                 'padatious': {
                     "single_thread": "true"
-                    },
-                "auto_update": "false"
+                    }
             }
         if update is False:
             new_config = {
                 'padatious': {
                     "single_thread": "false"
-                    },
-                "auto_update": "true"
+                    }
             }
         user_config = LocalConf(USER_CONFIG)
         user_config.merge(new_config)
