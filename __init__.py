@@ -1,6 +1,25 @@
+"""
+Skill remote-debug-skill
+Copyright (C) 2020  Andreas Lorensen
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
 from mycroft import MycroftSkill, intent_file_handler
 from mycroft.configuration.config import LocalConf, USER_CONFIG, Configuration
 from mycroft.messagebus.message import Message
+import os
 import subprocess
 import ptvsd
 
@@ -11,7 +30,7 @@ class RemoteDebug(MycroftSkill):
 
     def initialize(self):
         if not self.settings.get('padatious_single_thread'):
-             self.settings['padatious_single_thread'] = Configuration.get()['padatious']["single_thread"]
+            self.settings['padatious_single_thread'] = Configuration.get()['padatious']["single_thread"]
 
         if self.settings['padatious_single_thread'] is not Configuration.get()['padatious']["single_thread"]:
             self.set_single_thread(self.settings['padatious_single_thread'])
@@ -28,14 +47,12 @@ class RemoteDebug(MycroftSkill):
         except Exception:
             self.log.info('PTVSD already running')
 
-
     @intent_file_handler('stop.debug.remote.intent')
     def handle_stop_debug_remote(self, message):
         self.log.info('Stoppig PTVSD - Python Tools for Visual Studio debug server.....')
-        self.set_single_thread(self.single_thread)
+        self.set_single_thread(self.settings['padatious_single_thread'])
         self.log.info('Restarting skillservice')
-        subprocess.Popen('mycroft-start skills restart',
-                         cwd=self.SafePath, preexec_fn=os.setsid, shell=True)
+        subprocess.Popen('mycroft-start skills restart', preexec_fn=os.setsid, shell=True)
 
     def set_single_thread(self, update):
         new_config = {
@@ -51,6 +68,7 @@ class RemoteDebug(MycroftSkill):
 
     def shutdown(self):
         self.set_single_thread(self.settings['padatious_single_thread'])
+
 
 def create_skill():
     return RemoteDebug()

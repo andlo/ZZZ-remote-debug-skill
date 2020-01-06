@@ -1,3 +1,3 @@
 dependencies:
   python:
-    - ptvsd
+    - ptvsd==5.0.0a10
