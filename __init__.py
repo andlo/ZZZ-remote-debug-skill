@@ -10,13 +10,11 @@ class RemoteDebug(MycroftSkill):
         MycroftSkill.__init__(self)
 
     def initialize(self):
-        self.padatious_config = Configuration.get()['padatious']
-        if self.padatious_config.get("single_thread"):
-            self.single_thread = self.padatious_config["single_thread"]
-        else:
-            self.single_thread = "False"
+        if not self.settings.get('padatious_single_thread'):
+             self.settings['padatious_single_thread'] = Configuration.get()['padatious']["single_thread"]
 
-
+        if self.settings['padatious_single_thread'] is not Configuration.get()['padatious']["single_thread"]:
+            self.set_single_thread(self.settings['padatious_single_thread'])
 
     @intent_file_handler('debug.remote.intent')
     def handle_debug_remote(self, message):
@@ -24,16 +22,9 @@ class RemoteDebug(MycroftSkill):
         self.set_single_thread(True)
         self.log.info('')
         try:
-            ptvsd.enable_attach(address=('0.0.0.0', '5678'), log_dir='/var/log/mycroft')
+            ptvsd.enable_attach(address=('0.0.0.0', '5678'))
             self.log.info('Debugserver port 5678 reddy for attatch.')
             self.log.info('THEIA IDE is alreddy setup so you just have to start debug from debug menu')
-            self.log.info('')
-            self.log.info('When finish debugging - single_thread settings are restored and skillservice')
-            self.log.info('are restarted. Restarting skillservice when debugger is injected will end PTVSD,')
-            self.log.info('but not reset single_thread setting.')
-            self.log.info('')
-            self.log.info('Happy Mycrofting.')
-            self.log.info('')
         except Exception:
             self.log.info('PTVSD already running')
 
@@ -45,12 +36,11 @@ class RemoteDebug(MycroftSkill):
         self.log.info('Restarting skillservice')
         subprocess.Popen('mycroft-start skills restart',
                          cwd=self.SafePath, preexec_fn=os.setsid, shell=True)
-        self.test = None
 
     def set_single_thread(self, update):
         new_config = {
                        'padatious': {
-                       'single_thread': str(update)
+                       'single_thread': update
                         }
                      }
         user_config = LocalConf(USER_CONFIG)
@@ -60,8 +50,7 @@ class RemoteDebug(MycroftSkill):
         self.bus.emit(Message('configuration.updated'))
 
     def shutdown(self):
-        self.set_single_thread(self.single_thread)
-
+        self.set_single_thread(self.settings['padatious_single_thread'])
 
 def create_skill():
     return RemoteDebug()
