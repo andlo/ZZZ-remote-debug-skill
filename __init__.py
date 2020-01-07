@@ -21,8 +21,7 @@ from mycroft.configuration.config import LocalConf, USER_CONFIG, Configuration
 from mycroft.messagebus.message import Message
 import os
 import subprocess
-import ptvsd
-
+import psutil
 
 class RemoteDebug(MycroftSkill):
     def __init__(self):
@@ -32,27 +31,41 @@ class RemoteDebug(MycroftSkill):
         if not self.settings.get('padatious_single_thread'):
             self.settings['padatious_single_thread'] = Configuration.get()['padatious']["single_thread"]
 
-        if self.settings['padatious_single_thread'] is not Configuration.get()['padatious']["single_thread"]:
-            self.set_single_thread(self.settings['padatious_single_thread'])
+        ptvsd_pid = self.is_process_running('python3 -m ptvsd')
+        skills_pid = self.is_process_running('python3 -m mycroft.skills') 
+        if ptvsd_pid == skills_pid:
+            self.set_single_thread(True)
+        else:
+            self.set_single_thread(self.settings.get('padatious_single_thread'))
+            if ptvsd_pid:
+                proc = subprocess.Popen('pkill -9 ' + str(ptvsd_pid),
+                                        preexec_fn=os.setsid, shell=True)
+                proc.wait()
+        
 
     @intent_file_handler('debug.remote.intent')
     def handle_debug_remote(self, message):
-        self.log.info('Starting PTVSD - Python Tools for Visual Studio debug server.....')
-        self.set_single_thread(True)
-        self.log.info('')
-        try:
-            ptvsd.enable_attach(address=('0.0.0.0', '5678'))
+        if self.is_process_running('python3 -m ptvsd'):
+            self.log.info('PTVSD Alreddy running')
+            return
+        else:
+            self.log.info('Starting PTVSD - Python Tools for Visual Studio debug server.....')
             self.log.info('Debugserver port 5678 reddy for attatch.')
             self.log.info('THEIA IDE is alreddy setup so you just have to start debug from debug menu')
-        except Exception:
-            self.log.info('PTVSD already running')
-
+            self.set_single_thread(True)
+            self.log.info('Restarting skill-service')
+            proc = subprocess.Popen(self.root_dir + '/BeginDebug.sh',
+                                    preexec_fn=os.setsid, shell=True)
+            proc.wait()
+            
     @intent_file_handler('stop.debug.remote.intent')
     def handle_stop_debug_remote(self, message):
         self.log.info('Stoppig PTVSD - Python Tools for Visual Studio debug server.....')
         self.set_single_thread(self.settings['padatious_single_thread'])
         self.log.info('Restarting skillservice')
-        subprocess.Popen('mycroft-start skills restart', preexec_fn=os.setsid, shell=True)
+        proc = subprocess.Popen(self.root_dir + '/EndDebug.sh',
+                                preexec_fn=os.setsid, shell=True)
+        proc.wait()
 
     def set_single_thread(self, update):
         new_config = {
@@ -65,9 +78,24 @@ class RemoteDebug(MycroftSkill):
         user_config.store()
         self.log.info('Setting padatious single_thread = ' + str(update))
         self.bus.emit(Message('configuration.updated'))
-
-    def shutdown(self):
-        self.set_single_thread(self.settings['padatious_single_thread'])
+        
+    def is_process_running(self, Name):
+        processes = []
+        for proc in psutil.process_iter():
+            try:
+                pinfo = proc.as_dict(attrs=['pid', 'name', 'cmdline'])
+                cmd = ' '.join(pinfo['cmdline'])
+                if Name in cmd:
+                    processes.append(pinfo['pid'])
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
+        if processes:
+            return processes
+        else:
+            return False
+  
+#    def shutdown(self):
+#        self.set_single_thread(self.settings['padatious_single_thread'])
 
 
 def create_skill():
