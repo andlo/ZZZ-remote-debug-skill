@@ -31,16 +31,18 @@ class RemoteDebug(MycroftSkill):
         if not self.settings.get('padatious_single_thread'):
             self.settings['padatious_single_thread'] = Configuration.get()['padatious']["single_thread"]
 
+
         ptvsd_pid = self.is_process_running('python3 -m ptvsd')
-        skills_pid = self.is_process_running('python3 -m mycroft.skills') 
+        skills_pid = self.is_process_running(' -m mycroft.skills') 
         if ptvsd_pid == skills_pid:
             self.set_single_thread(True)
         else:
             self.set_single_thread(self.settings.get('padatious_single_thread'))
             if ptvsd_pid:
-                proc = subprocess.Popen('pkill -9 ' + str(ptvsd_pid),
-                                        preexec_fn=os.setsid, shell=True)
-                proc.wait()
+                for p in ptvsd_pid:
+                    proc = subprocess.Popen('kill -9 ' + str(p),
+                                            preexec_fn=os.setsid, shell=True)
+                    proc.wait()
         
 
     @intent_file_handler('debug.remote.intent')
@@ -92,7 +94,7 @@ class RemoteDebug(MycroftSkill):
         if processes:
             return processes
         else:
-            return False
+            return []
   
 #    def shutdown(self):
 #        self.set_single_thread(self.settings['padatious_single_thread'])
