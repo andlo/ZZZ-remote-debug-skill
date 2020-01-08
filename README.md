@@ -18,8 +18,8 @@ restart mycroft.skills skillservice
 
 [https://github.com/Microsoft/ptvsd](https://github.com/Microsoft/ptvsd)
 
-### This skills requere PR #2448 to work 
-https://github.com/MycroftAI/mycroft-core/pull/2448
+### This skills requere PR #2449 to work 
+https://github.com/MycroftAI/mycroft-core/pull/2449
 
 ## Examples
 * Start (remote|ptvsd) debug adaptor
