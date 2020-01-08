@@ -18,7 +18,7 @@ restart mycroft.skills skillservice
 
 [https://github.com/Microsoft/ptvsd](https://github.com/Microsoft/ptvsd)
 
-### This skills requere PR #2449 to work 
+### This skills requere using the dev branch and PR #2449 to work 
 https://github.com/MycroftAI/mycroft-core/pull/2449
 
 ## Examples
