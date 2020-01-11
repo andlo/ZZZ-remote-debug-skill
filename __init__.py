@@ -47,7 +47,7 @@ class RemoteDebug(MycroftSkill):
                     proc = subprocess.Popen('kill -9 ' + str(p),
                                             preexec_fn=os.setsid, shell=True)
                     proc.wait()
-            if self.settings.get('remote_debug'):
+            if self.settings.get('remote_debug') is True:
                 self.debug_remote()
             else:
                 self.set_single_thread(self.settings.get('padatious_single_thread'))
