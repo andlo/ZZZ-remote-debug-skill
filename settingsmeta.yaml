@@ -1,0 +1,10 @@
+skillMetadata:
+  sections:
+    - name: Settings
+      fields:
+      - type: label
+        label: Run remote debugadaptor everytime skill service are startet or restarted.
+      - name: remote_debug
+        type: checkbox
+        label: Run remote debug adaptor
+        value: "False"
