@@ -14,12 +14,23 @@ padatious single_thread = true so skills service runs in single thread.
 THEIA IDE is already setup so you just have to start debug from debug menu
 
 When finish debugging SAY "End debug adaptor" and skill restore single_thread settings and 
-restart mycroft.skills skills service
+restart mycroft.skills service
 
 [https://github.com/Microsoft/ptvsd](https://github.com/Microsoft/ptvsd)
 
-### This skills requeue using the dev branch and PR #2449 to work 
-https://github.com/MycroftAI/mycroft-core/pull/2449
+### This skills requeue using the dev branch 
+
+### launch.json
+To use the debug adaptor from THEIA IDE or VS Code make sure ou use Python 
+remote attach setting in launch.json
+        {
+            "name": "Python: Remote Attach",
+            "type": "python",
+            "request": "attach",
+            "port": 5678,
+            "host": "localhost",
+        }
+
 
 ## Examples
 * Start (remote|ptvsd|) debug adaptor
