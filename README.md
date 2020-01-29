@@ -23,14 +23,15 @@ restart mycroft.skills service
 ### launch.json
 To use the debug adaptor from THEIA IDE or VS Code make sure ou use Python 
 remote attach setting in launch.json
-        {
-            "name": "Python: Remote Attach",
-            "type": "python",
-            "request": "attach",
-            "port": 5678,
-            "host": "localhost",
-        }
-
+```
+    {
+        "name": "Python: Remote Attach",
+        "type": "python",
+        "request": "attach",
+        "port": 5678,
+        "host": "localhost",
+    }
+```
 
 ## Examples
 * Start (remote|ptvsd|) debug adaptor
