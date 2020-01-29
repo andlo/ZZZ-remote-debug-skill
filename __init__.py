@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+
 from mycroft import MycroftSkill, intent_file_handler
 from mycroft.configuration.config import LocalConf, USER_CONFIG, Configuration
 from mycroft.messagebus.message import Message
