@@ -115,7 +115,9 @@ class RemoteDebug(MycroftSkill):
                 cmd = ' '.join(pinfo['cmdline'])
                 if name in cmd:
                     processes.append(pinfo['pid'])
-            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            except (psutil.NoSuchProcess, 
+                    psutil.AccessDenied, 
+                    psutil.ZombieProcess):
                 pass
         if processes:
             return processes
