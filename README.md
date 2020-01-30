@@ -18,7 +18,7 @@ restart mycroft.skills service
 
 [https://github.com/Microsoft/ptvsd](https://github.com/Microsoft/ptvsd)
 
-### This skills requeue using mycroft.core dev branch 
+### This skills requeue using mycroft.core 19.8.7 or newer releases
 
 ### launch.json
 To use the debug adaptor from THEIA IDE or VS Code make sure ou use Python 

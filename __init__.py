@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 from mycroft import MycroftSkill, intent_file_handler
-from mycroft.configuration.config import LocalConf, USER_CONFIG, Configuration
+from mycroft.configuration.config import LocalConf, USER_CONFIG
 from mycroft.messagebus.message import Message
 import os
 import subprocess
@@ -74,7 +74,7 @@ class RemoteDebug(MycroftSkill):
         else:
             self.log.info('Starting PTVSD - Python Tools for Visual Studio debug server.....')
             self.log.info('Debugserver port 5678 reddy for attatch.')
-            self.log.info('THEIA IDE is alreddy setup so you just have to start debug from debug menu')
+            self.log.info('THEIA IDE is already setup so you just have to start debug from debug menu')
             self.set_single_thread(True)
             self.log.info('Restarting skill-service')
             self.settings['remote_debug'] = True
@@ -121,10 +121,6 @@ class RemoteDebug(MycroftSkill):
             return processes
         else:
             return []
-
-#    def shutdown(self):
-#        self.set_single_thread(self.settings['padatious_single_thread'])
-
 
 def create_skill():
     return RemoteDebug()
