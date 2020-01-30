@@ -122,5 +122,6 @@ class RemoteDebug(MycroftSkill):
         else:
             return []
 
+
 def create_skill():
     return RemoteDebug()
