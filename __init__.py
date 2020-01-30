@@ -47,7 +47,7 @@ class RemoteDebug(MycroftSkill):
             if self.settings.get('remote_debug') is True:
                 self.debug_remote()
             else:
-                self.set_single_thread(self.settings.get('padatious_single_thread'))
+                self.set_single_thread(False)
 
     @intent_file_handler('debug.remote.intent')
     def handle_debug_remote(self, message):
