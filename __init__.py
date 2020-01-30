@@ -86,6 +86,9 @@ class RemoteDebug(MycroftSkill):
 
     def stop_debug_remote(self):
         self.log.info('Stoppig PTVSD - Python Tools for Visual Studio debug server.....')
+        self.settings['remote_debug'] = False
+        self.settings.store()
+
         self.set_single_thread(False)
         self.log.info('Restarting skillservice')
         proc = subprocess.Popen(self.root_dir + '/EndDebug.sh',
