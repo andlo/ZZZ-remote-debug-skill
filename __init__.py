@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from mycroft import MycroftSkill, intent_file_handler
 from mycroft.configuration.config import LocalConf, USER_CONFIG
 from mycroft.messagebus.message import Message
+from mycroft.skills.settings import save_settings
 import os
 import subprocess
 import psutil
@@ -32,7 +33,7 @@ class RemoteDebug(MycroftSkill):
     def initialize(self):
         if not self.settings.get('remote_debug'):
             self.settings['remote_debug'] = False
-            self.settings.store()
+            save_settings(self.root_dir, self.settings
 
         ptvsd_pid = self.is_process_running('python3 -m ptvsd')
         skills_pid = self.is_process_running(' -m mycroft.skills')
@@ -78,7 +79,7 @@ class RemoteDebug(MycroftSkill):
             self.set_single_thread(True)
             self.log.info('Restarting skill-service')
             self.settings['remote_debug'] = True
-            self.settings.store()
+
 
             proc = subprocess.Popen(self.root_dir + '/BeginDebug.sh',
                                     preexec_fn=os.setsid, shell=True)
@@ -87,7 +88,7 @@ class RemoteDebug(MycroftSkill):
     def stop_debug_remote(self):
         self.log.info('Stoppig PTVSD - Python Tools for Visual Studio debug server.....')
         self.settings['remote_debug'] = False
-        self.settings.store()
+        save_settings(self.root_dir, self.settings
 
         self.set_single_thread(False)
         self.log.info('Restarting skillservice')
