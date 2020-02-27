@@ -33,7 +33,7 @@ class RemoteDebug(MycroftSkill):
     def initialize(self):
         if not self.settings.get('remote_debug'):
             self.settings['remote_debug'] = False
-            save_settings(self.root_dir, self.settings
+            save_settings(self.root_dir, self.settings)
 
         ptvsd_pid = self.is_process_running('python3 -m ptvsd')
         skills_pid = self.is_process_running(' -m mycroft.skills')
@@ -88,7 +88,7 @@ class RemoteDebug(MycroftSkill):
     def stop_debug_remote(self):
         self.log.info('Stoppig PTVSD - Python Tools for Visual Studio debug server.....')
         self.settings['remote_debug'] = False
-        save_settings(self.root_dir, self.settings
+        save_settings(self.root_dir, self.settings)
 
         self.set_single_thread(False)
         self.log.info('Restarting skillservice')
