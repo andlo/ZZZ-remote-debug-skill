@@ -1,8 +1,8 @@
 # <img src="https://raw.githack.com/FortAwesome/Font-Awesome/master/svgs/solid/bug.svg" card_color="#990000" width="50" height="50" style="vertical-align:bottom"/> Remote Debug
-Enable PTVSD - Python Tools for Visual Studio debug server
+Enable Debugpy - Visual Studio Python debug server
 
 ## About
-This skill adds PTVSD - Python Tools for Visual Studio debug server to make it posible to 
+This skill adds Debugpy - Visual Studio Python debug server to make it posible to 
 debug running skills.
 It is made as a companion to the THEIA IDE skill to enable debugging from there. But if you
 use another IDE like VS Code you can use this skill to inject the debug adaptor in the
@@ -34,12 +34,12 @@ remote attach setting in launch.json
 ```
 
 ## Examples
-* Start (remote|ptvsd|) debug adaptor
-* Enable (remote|ptvsd|) debug adaptor
-* Run (remote|ptvsd|) debug adaptor
-* Stop (remote|ptvsd|) debug adaptor
-* Exit (remote|ptvsd|) debug adaptor
-* End (remote|ptvsd|) debug adaptor
+* Start (remote|ptvsd|debugpy|) debug adaptor
+* Enable (remote|ptvsd|debugpy|) debug adaptor
+* Run (remote|ptvsd|debugpy|) debug adaptor
+* Stop (remote|ptvsd|debugpy|) debug adaptor
+* Exit (remote|ptvsd|debugpy|) debug adaptor
+* End (remote|ptvsd|debugpy|) debug adaptor
 
 ## Credits
 Andreas Lorensen (@andlo)

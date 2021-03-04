@@ -73,7 +73,7 @@ class RemoteDebug(MycroftSkill):
             self.log.info('DEBUGPY Alreddy running')
             return
         else:
-            self.log.info('Starting DEBUGPY - Python Tools for Visual Studio debug server.....')
+            self.log.info('Starting DEBUGPY - Visual Studio Python debug server.....')
             self.log.info('Debugserver port 5678 reddy for attatch.')
             self.log.info('THEIA IDE is already setup so you just have to start debug from debug menu')
             self.set_single_thread(True)
