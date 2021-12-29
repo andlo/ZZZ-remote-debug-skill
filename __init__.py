@@ -35,13 +35,13 @@ class RemoteDebug(MycroftSkill):
             self.settings['remote_debug'] = False
             save_settings(self.root_dir, self.settings)
 
-        ptvsd_pid = self.is_process_running('python3 -m ptvsd')
+        debugpy_pid = self.is_process_running('python3 -m debugpy')
         skills_pid = self.is_process_running(' -m mycroft.skills')
-        if ptvsd_pid == skills_pid:
+        if debugpy_pid == skills_pid:
             self.set_single_thread(True)
         else:
-            if ptvsd_pid:
-                for p in ptvsd_pid:
+            if debugpy_pid:
+                for p in debugpy_pid:
                     proc = subprocess.Popen('kill -9 ' + str(p),
                                             preexec_fn=os.setsid, shell=True)
                     proc.wait()
@@ -52,8 +52,8 @@ class RemoteDebug(MycroftSkill):
 
     @intent_file_handler('debug.remote.intent')
     def handle_debug_remote(self, message):
-        if self.is_process_running('python3 -m ptvsd'):
-            self.log.info('PTVSD Alreddy running')
+        if self.is_process_running('python3 -m debugpy'):
+            self.log.info('DEBUGPY Alreddy running')
             self.speak_dialog('debug.adaptor.is.running')
         else:
             self.speak_dialog('debug.adaptor.is.starting')
@@ -61,19 +61,19 @@ class RemoteDebug(MycroftSkill):
 
     @intent_file_handler('stop.debug.remote.intent')
     def handle_stop_debug_remote(self, message):
-        if not self.is_process_running('python3 -m ptvsd'):
-            self.log.info('PTVSD is not  running')
+        if not self.is_process_running('python3 -m debugpy'):
+            self.log.info('DEBUGPY is not  running')
             self.speak_dialog('debug.adaptor.is.not.running')
         else:
             self.speak_dialog('debug.adaptor.is.stopping')
             self.stop_debug_remote()
 
     def debug_remote(self):
-        if self.is_process_running('python3 -m ptvsd'):
-            self.log.info('PTVSD Alreddy running')
+        if self.is_process_running('python3 -m debugpy'):
+            self.log.info('DEBUGPY Alreddy running')
             return
         else:
-            self.log.info('Starting PTVSD - Python Tools for Visual Studio debug server.....')
+            self.log.info('Starting DEBUGPY - Visual Studio Python debug server.....')
             self.log.info('Debugserver port 5678 reddy for attatch.')
             self.log.info('THEIA IDE is already setup so you just have to start debug from debug menu')
             self.set_single_thread(True)
@@ -86,7 +86,7 @@ class RemoteDebug(MycroftSkill):
             proc.wait()
 
     def stop_debug_remote(self):
-        self.log.info('Stoppig PTVSD - Python Tools for Visual Studio debug server.....')
+        self.log.info('Stoppig DEBUGPY - Python Tools for Visual Studio debug server.....')
         self.settings['remote_debug'] = False
         save_settings(self.root_dir, self.settings)
 

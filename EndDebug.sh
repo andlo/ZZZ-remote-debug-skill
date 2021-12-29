@@ -1,2 +1,2 @@
-pkill -f "python3 -m ptvsd"
+pkill -f "python3 -m debugpy"
 mycroft-start skills restart
